@@ -6,6 +6,7 @@ import {allPopularMovie} from '../api/api';
 import {LOGO} from '../constants';
 
 const HomeScreen = () => {
+  // hook
   const [movies, setMovies] = useState([]);
 
   const loadMoviesList = async () => {
