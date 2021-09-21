@@ -8,7 +8,6 @@ class CastScreen extends Component {
     this.state = {
       data: [],
       movieId: 0,
-      name: 'Choose a cast name',
       index: 0,
     };
     this.state.movieId = route.params.idMovies;
