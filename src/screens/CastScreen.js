@@ -8,7 +8,7 @@ class CastScreen extends Component {
     this.state = {
       data: [],
       movieId: 0,
-      name: 'Choose a cast name',
+      // name: 'Choose a cast name',
       index: 0,
     };
     this.state.movieId = route.params.idMovies;
@@ -19,13 +19,14 @@ class CastScreen extends Component {
     movieCast(movieId).then(data =>
       this.setState({
         data: data.cast,
+        name: data.cast[0].name,
       }),
     );
   }
 
   onIndexChanged(name) {
     this.setState({
-      name: name,
+      name,
     });
   }
 
