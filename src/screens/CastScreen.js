@@ -25,6 +25,7 @@ class CastScreen extends Component {
 
   onIndexChanged(name) {
     this.setState({
+      //name cast
       name,
     });
   }
