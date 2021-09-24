@@ -1,12 +1,41 @@
 import React from 'react';
-import {Text, View, SafeAreaView, Image, TouchableOpacity} from 'react-native';
+import {Text, View, SafeAreaView, Image} from 'react-native';
 import {getPosterMovies} from '../api/api';
 import MyCastButton from '../components/CastButton';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {addFavorites, removeFavorites} from '../redux/actions/favoritesAction';
 
 const MovieScreen = ({route}) => {
   const navigation = useNavigation();
-  const idMovies = route.params.details.id;
+  const idMovie = route.params.details.id;
+
+  const dispatch = useDispatch();
+
+  const {favorites} = useSelector(state => state.favoriteData);
+
+  const addFavoritesId = favorite => {
+    dispatch(addFavorites(favorite));
+  };
+  const deleteFavoritesId = favorite => {
+    dispatch(removeFavorites(favorite));
+  };
+
+  const HandleAddFavorite = favorite => {
+    addFavoritesId(favorite);
+  };
+  const HandleRemoveFavorite = favorite => {
+    deleteFavoritesId(favorite);
+  };
+
+  const handlePress = item => {
+    if (favorites.includes(idMovie)) {
+      HandleRemoveFavorite(item);
+    } else {
+      HandleAddFavorite(item);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.containerDetails}>
       <View>
@@ -19,6 +48,15 @@ const MovieScreen = ({route}) => {
           source={{uri: getPosterMovies(route.params.details.poster_path)}}
         />
       </View>
+      <View style={styles.buttonCastFav}>
+        <MyCastButton
+          text="Favorites"
+          idMovie
+          onPress={() => {
+            handlePress(idMovie);
+          }}
+        />
+      </View>
       <View style={styles.containerCast}>
         <View>
           <Text style={styles.textDetails}>Original Title: </Text>
@@ -29,12 +67,12 @@ const MovieScreen = ({route}) => {
         <View style={styles.buttonCast}>
           <MyCastButton
             text="Cast List"
-            idMovies
+            idMovie
             onPress={() => {
               navigation.navigate('Cast List', {
                 screen: 'CastScreen',
                 params: {
-                  idMovies,
+                  idMovie,
                 },
               });
             }}
@@ -91,6 +129,9 @@ const styles = {
   },
   buttonCast: {
     top: 10,
+    alignitems: 'center',
+  },
+  buttonCastFav: {
     alignitems: 'center',
   },
 };
