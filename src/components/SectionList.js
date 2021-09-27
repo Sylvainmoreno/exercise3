@@ -9,9 +9,14 @@ import {
 } from 'react-native';
 import {getPosterMovies} from '../api/api';
 import {useNavigation} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const SectionListMovie = ({sections}) => {
   const navigation = useNavigation();
+
+  const MyIcon = (
+    <Icon name="heart" size={20} color="red" style={styles.icon} />
+  );
 
   const renderItem = ({item, index}) => {
     return (
@@ -34,6 +39,7 @@ const SectionListMovie = ({sections}) => {
               style={styles.posterMovie}
               source={{uri: getPosterMovies(item.poster_path)}}
             />
+            {MyIcon}
           </TouchableOpacity>
         </View>
         <View style={styles.containerText}>
@@ -46,6 +52,7 @@ const SectionListMovie = ({sections}) => {
   return (
     <SectionList
       sections={sections}
+      favorites={MyIcon}
       renderItem={renderItem}
       horizontal
       showsHorizontalScrollIndicator={false}
@@ -94,6 +101,11 @@ const styles = {
     width: 150,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+  },
+  icon: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
   },
 };
 

@@ -5,14 +5,13 @@ import SectionListMovie from '../components/SectionList';
 import {allPopularMovie} from '../api/api';
 import {LOGO} from '../constants';
 
-const HomeScreen = () => {
-  // hook
+const HomeScreen = ({route}) => {
   const [movies, setMovies] = useState([]);
+  const favList = route?.params?.favList;
 
   const loadMoviesList = async () => {
     const loadedMovies = await allPopularMovie();
     setMovies(loadedMovies.results);
-    return loadedMovies;
   };
 
   const DataSection = [
@@ -21,6 +20,11 @@ const HomeScreen = () => {
       data: movies.sort(() => Math.random() - Math.random()).slice(0, 5),
     },
   ];
+
+  const favIcon = () => {
+    if (favList.includes(loadMoviesList())) {
+    }
+  };
 
   useEffect(() => {
     loadMoviesList();
@@ -43,6 +47,7 @@ const HomeScreen = () => {
       </View>
       <SectionListMovie
         sections={DataSection}
+        favIcons={() => favIcon()}
         stickySectionHeadersEnabled={true}
       />
     </SafeAreaView>

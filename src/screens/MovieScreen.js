@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, View, SafeAreaView, Image} from 'react-native';
 import {getPosterMovies} from '../api/api';
 import MyCastButton from '../components/CastButton';
@@ -9,6 +9,7 @@ import {addFavorites, removeFavorites} from '../redux/actions/favoritesAction';
 const MovieScreen = ({route}) => {
   const navigation = useNavigation();
   const idMovie = route.params.details.id;
+  // const [displayFavorites, setDisplayFavorites] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -48,14 +49,30 @@ const MovieScreen = ({route}) => {
           source={{uri: getPosterMovies(route.params.details.poster_path)}}
         />
       </View>
-      <View style={styles.buttonCastFav}>
-        <MyCastButton
-          text="Favorites"
-          idMovie
-          onPress={() => {
-            handlePress(idMovie);
-          }}
-        />
+      <View style={styles.containerButtonFav}>
+        <View style={styles.buttonCastFav}>
+          <MyCastButton
+            text="goBack"
+            favorites
+            onPress={() => {
+              navigation.navigate('FulllFlix', {
+                screen: 'HomeScreen',
+                params: {
+                  favList: favorites,
+                },
+              });
+            }}
+          />
+        </View>
+        <View style={styles.buttonCastFav}>
+          <MyCastButton
+            text="Favorites"
+            idMovie
+            onPress={() => {
+              handlePress(idMovie);
+            }}
+          />
+        </View>
       </View>
       <View style={styles.containerCast}>
         <View>
@@ -112,7 +129,6 @@ const styles = {
     color: 'white',
     fontWeight: 'bold',
   },
-
   textSubDetails: {
     top: 10,
     color: 'white',
@@ -126,6 +142,10 @@ const styles = {
   containerCast: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  containerButtonFav: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   buttonCast: {
     top: 10,
