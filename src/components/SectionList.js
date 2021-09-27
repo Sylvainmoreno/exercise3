@@ -10,11 +10,14 @@ import {
 import {getPosterMovies} from '../api/api';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useSelector} from 'react-redux';
 
 const SectionListMovie = ({sections}) => {
   const navigation = useNavigation();
 
-  const MyIcon = (
+  const {favorites} = useSelector(state => state.favoriteData);
+
+  const MyFavAdded = (
     <Icon name="heart" size={20} color="red" style={styles.icon} />
   );
 
@@ -39,7 +42,7 @@ const SectionListMovie = ({sections}) => {
               style={styles.posterMovie}
               source={{uri: getPosterMovies(item.poster_path)}}
             />
-            {MyIcon}
+            {favorites.includes(item.id) ? MyFavAdded : null}
           </TouchableOpacity>
         </View>
         <View style={styles.containerText}>
@@ -52,7 +55,6 @@ const SectionListMovie = ({sections}) => {
   return (
     <SectionList
       sections={sections}
-      favorites={MyIcon}
       renderItem={renderItem}
       horizontal
       showsHorizontalScrollIndicator={false}

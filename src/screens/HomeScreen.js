@@ -5,9 +5,10 @@ import SectionListMovie from '../components/SectionList';
 import {allPopularMovie} from '../api/api';
 import {LOGO} from '../constants';
 
-const HomeScreen = ({route}) => {
+const HomeScreen = ({route, index}) => {
   const [movies, setMovies] = useState([]);
-  const favList = route?.params?.favList;
+  // const [displayFav, setDisplayFav] = useState([]);
+  // const favList = route?.params?.favList;
 
   const loadMoviesList = async () => {
     const loadedMovies = await allPopularMovie();
@@ -20,11 +21,6 @@ const HomeScreen = ({route}) => {
       data: movies.sort(() => Math.random() - Math.random()).slice(0, 5),
     },
   ];
-
-  const favIcon = () => {
-    if (favList.includes(loadMoviesList())) {
-    }
-  };
 
   useEffect(() => {
     loadMoviesList();
@@ -47,7 +43,6 @@ const HomeScreen = ({route}) => {
       </View>
       <SectionListMovie
         sections={DataSection}
-        favIcons={() => favIcon()}
         stickySectionHeadersEnabled={true}
       />
     </SafeAreaView>

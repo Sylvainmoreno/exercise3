@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Text, View, SafeAreaView, Image} from 'react-native';
 import {getPosterMovies} from '../api/api';
 import MyCastButton from '../components/CastButton';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {addFavorites, removeFavorites} from '../redux/actions/favoritesAction';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MovieScreen = ({route}) => {
   const navigation = useNavigation();
   const idMovie = route.params.details.id;
-  // const [displayFavorites, setDisplayFavorites] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -29,6 +29,14 @@ const MovieScreen = ({route}) => {
     deleteFavoritesId(favorite);
   };
 
+  const MyFavAdded = (
+    <Icon name="heart" size={20} color="red" style={styles.icon} />
+  );
+
+  const notMyFav = (
+    <Icon name="heart-o" size={20} color="red" style={styles.icon} />
+  );
+
   const handlePress = item => {
     if (favorites.includes(idMovie)) {
       HandleRemoveFavorite(item);
@@ -39,6 +47,21 @@ const MovieScreen = ({route}) => {
 
   return (
     <SafeAreaView style={styles.containerDetails}>
+      <View style={styles.buttonCastFav}>
+        <MyCastButton
+          text="goBack"
+          favorites
+          onPress={() => {
+            navigation.navigate('FulllFlix', {
+              screen: 'HomeScreen',
+              params: {
+                favList: favorites,
+                movieId: idMovie,
+              },
+            });
+          }}
+        />
+      </View>
       <View>
         <Text style={styles.detailsTitle}>{route.params.details.title}</Text>
       </View>
@@ -52,21 +75,7 @@ const MovieScreen = ({route}) => {
       <View style={styles.containerButtonFav}>
         <View style={styles.buttonCastFav}>
           <MyCastButton
-            text="goBack"
-            favorites
-            onPress={() => {
-              navigation.navigate('FulllFlix', {
-                screen: 'HomeScreen',
-                params: {
-                  favList: favorites,
-                },
-              });
-            }}
-          />
-        </View>
-        <View style={styles.buttonCastFav}>
-          <MyCastButton
-            text="Favorites"
+            icon={favorites.includes(idMovie) ? MyFavAdded : notMyFav}
             idMovie
             onPress={() => {
               handlePress(idMovie);
